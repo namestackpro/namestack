@@ -101,16 +101,16 @@ const fileUpload = () => {
 
   return (
     <div className="w-full h-[100vh] border flex justify-center items-center text-6xl font-bold ">
-        <div className=" w-[57%] h-[70%] flex justify-between rounded-3xl backdrop-blur-md border-2 border-[#110f40] shadow-2xl bg-[#19183B]">
-            <div className={`bg-transparent w-full rounded-l-3xl flex justify-center items-center max-md:hidden `}> 
+        <div className=" xl:w-[50%] max-xl:w-[65%]  h-[70%] flex justify-between rounded-3xl backdrop-blur-md border-2 border-[#110f40] shadow-2xl bg-[#19183B]">
+            <div className={`bg-transparent w-full rounded-l-3xl flex justify-center items-center max-lg:hidden `}> 
 
-                <div className="p-3 flex flex-row  text-foreground font-bold text-xl gap-[1rem] justify-center items-center">
-                    <div className="rotate-[-45deg]">
-                        <div className="h-20 w-19 bg-[#D183C9] flex items-center justify-center rounded-r-full">
-                            <div className="h-13 w-14  bg-[#FFEBF0] rounded-r-4xl border-4 border-[#19183B]"></div>
+                <div className="p-3 flex flex-row  text-foreground font-bold text-xl gap-[.6rem] justify-center items-center">
+                    <div className="rotate-[-45deg] ">
+                        <div className="h-15 w-14 max-lg:h-10 max-lg:w-9 bg-[#D183C9] flex items-center justify-center rounded-r-full">
+                            <div className="h-10 w-10   bg-[#FFEBF0] rounded-r-4xl border-4 border-[#19183B]"></div>
                         </div>
                     </div>
-                    <span className='text-[#F1F1F9] flex flex-row justify-center items-end text-4xl'>Namestack</span>
+                    <span className='text-[#F1F1F9] flex flex-row justify-center items-end text-3xl'>Namestack</span>
                 </div>  
 
 
@@ -136,8 +136,8 @@ const fileUpload = () => {
                     className={`border-2 border-dashed w-[90%] h-[40%] rounded-lg p-2 text-center cursor-pointer flex justify-center items-center transition-colors ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'}`}
                     >
 
-                        <div className="bg-gray-400 w-[90%] text-base rounded-2xl h-[90%] flex flex-col font-normal justify-center items-center gap-7 ">
-                            <FileUpIcon className="text-blue-600 h-7 w-7"/>
+                        <div className="bg-gray-400 w-[90%] text-base rounded-2xl h-[90%] flex flex-col font-normal justify-center items-center gap-6 py-2">
+                            <FileUpIcon className="text-blue-600 h-8 w-8"/>
                             <div className="flex gap-1.5 flex-col justify-center items-center">
                                     <p className="text-gray-100 text-sm font-bold ">Drag & Drop your file here </p>
                                     <p className="text-sm uppercase font-bold">or</p> 
