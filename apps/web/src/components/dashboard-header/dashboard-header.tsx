@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TrendingUp, Globe, ArrowLeftToLine, Wallet, RotateCcw, Settings2Icon, UserCircle } from 'lucide-react';
+import { Globe, UserCircle, ChartNoAxesCombined, Bot } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { UserButton, useUser } from '@clerk/nextjs';
 
@@ -11,9 +11,9 @@ const DashboardHeader = () => {
 
   const portfolioItems = [
     { title: user?.firstName || 'User', icon: UserCircle, path: '/dashboard', color: 'text-gray-500' },
-    { title: 'AI Insight', icon: TrendingUp, path: '/dashboard/analytics', color: 'text-green-500' },
-    { title: 'Your Domains', icon: Globe, path: '/dashboard/domains', color: 'text-blue-500' },
-    { title: 'Renewals', icon: RotateCcw, path: '/dashboard/renewals', color: 'text-purple-500' },
+    { title: 'Domain Vault', icon: Globe, path: '/dashboard/domainvault', color: 'text-green-500' },
+    { title: 'Report & Analytics', icon: ChartNoAxesCombined, path: '/dashboard/report', color: 'text-blue-500' },
+    { title: 'AI Domain Tracker', icon: Bot, path: '/dashboard/renewals', color: 'text-purple-500' },
 
   ];
 

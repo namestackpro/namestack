@@ -2,10 +2,20 @@ import { DollarSign, BarChart2, Clock, Star } from "lucide-react"
 
 export const statData = {
     stats: [
+        
         { value: '$1,258,470', label: 'Portfolio Value', color: 'text-green-500', description: 'this month', gains: 5.5, icon: DollarSign },
         { value: '2,547', label: 'Total Domains', color: 'text-muted-foreground', description: 'Registered across 15 TLDs', icon: BarChart2 },
         { value: '56', label: 'Expiring Soon', color: 'text-muted-foreground', description: 'In the next 30 days', icon: Clock},
         { value: '89%', label: 'AI Score', color: 'text-muted-foreground', description: 'Average quality score', icon: Star  },
+    ]
+};
+
+export const aiStat ={
+    stats: [
+      { value: 87, label: 'Portfolio Value', color: 'text-green-500', gains: 5},
+      { value: 92, label: 'ROI Potential', color: 'text-muted-foreground', gains: 3 },
+      { value: 78, label: 'Market Alignment', color: 'text-muted-foreground', gains: -2},
+      { value: 94, label: 'Risk Assessment', color: 'text-muted-foreground', gains: 1 },
     ]
 };
 
