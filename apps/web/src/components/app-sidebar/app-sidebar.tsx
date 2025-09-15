@@ -1,3 +1,5 @@
+"use client"
+
 import { Bot, Globe, File, Search, Settings, ChartNoAxesCombined, Moon, Sun, HomeIcon, User2, ChevronUp, PieChart  } from "lucide-react"
 import { useRouter, usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -34,7 +36,7 @@ const items = [
       
   { title: "Dashboard", url: "/dashboard", icon: PieChart, },
   { title: "Domain Vault", url: "/dashboard/domainvault", icon: Globe, },
-  { title: "Report & Analytics", url: "#", icon: ChartNoAxesCombined, },
+  { title: "Report & Analytics", url: "/dashboard/report", icon: ChartNoAxesCombined, },
   { title: "AI Tracking", url: "#", icon: Bot,},
 
 ]
@@ -82,15 +84,15 @@ export function AppSidebar() {
                 Main
             </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="flex gap-3">
+            <SidebarMenu className="flex gap-3 px-1">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} >
                   <SidebarMenuButton
                       onClick={() => handleItemClick(item.url)}
                       className={`w-[90%] justify-start px-6 py-5 rounded-md text-sm font-normal ${
                         pathname === item.url
-                          ? 'bg-gray-100 text-gray-900 border-blue-200 border font-bold'
-                          : 'text-sm font-semibold text-muted-foreground hover:text-gray-700 hover:border-blue-400 hover:border transition-all duration-700 hover:scale-105 '
+                          ? 'bg-gray-100 text-gray-900 border-blue-300 border font-bold'
+                          : 'text-sm font-semibold text-muted-foreground hover:text-gray-700 hover:border-blue-400 hover:border transition-all duration-500 '
                       }`}
                     >
                       <item.icon className={`

@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { useState } from "react"
 import DashboardHeader from "@/components/dashboard-header/dashboard-header"
 import { DashboardContent } from "@/components/dashboard-content/dashboard-content"
+import { Heading } from "@radix-ui/themes"
 
 
 
@@ -34,10 +35,13 @@ const dashboard = () => {
                     </div>
                 </div>
 
-                <div className="px-8 pt-10 h-fit">
-                    <h2 className="text-base font-bold text-[#8d4485]">
+                <div className="px-8 py-4 h-fit flex flex-col gap-2.5">
+                    <Heading className="text-lg font-bold text-[#8d4485]">
                         Overview
-                    </h2>
+                    </Heading>
+                    <p className="text-gray-700 text-sm font-medium">
+                        Harness the power of AI to optimize your domain investments
+                    </p>
                 </div>
 
                 <div >
