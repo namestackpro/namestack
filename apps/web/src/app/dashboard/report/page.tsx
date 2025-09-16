@@ -32,13 +32,12 @@ const Report = () => {
                     </div>
 
                     {/* AI Stat Cards */}
-                        <Aistatcard/>
-
-                        {/* latest insight and intel */}
-                        <Aiinsight/>
+                    <Aistatcard/>
 
 
-                    
+                    {/* latest insight and intel */}
+                    <Aiinsight/>
+    
                 </div>
 
             </main>
