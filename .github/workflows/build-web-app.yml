@@ -21,9 +21,9 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies
-        working-directory: app/web
+        working-directory: apps/web
         run: pnpm install
 
       - name: Build with opennextjs-cloudflare
-        working-directory: app/web
+        working-directory: apps/web
         run: pnpm opennextjs-cloudflare build
