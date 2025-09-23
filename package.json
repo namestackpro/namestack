@@ -1,9 +1,7 @@
 {
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
-    "lint": "eslint",
+    "dev": "turbo dev",
+    "build": "turbo build",
     "prepare": "husky"
   },
   "lint-staged": {

@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    environment: CI
+    environment: CI # lets us use vars set in the "CI" environment of this repo on GitHub
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -26,7 +26,7 @@ jobs:
         run: pnpm install
 
       - name: Set environment variables
-        run: echo "${{ vars.CLERK_PUBLISHABLE_KEY }}" && echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.CLERK_PUBLISHABLE_KEY }}" >> "$GITHUB_ENV"
+        run: echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.CLERK_PUBLISHABLE_KEY }}" >> "$GITHUB_ENV"
 
       - name: Build with opennextjs-cloudflare
         working-directory: apps/web
