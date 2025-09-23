@@ -5,11 +5,9 @@ on:
     branches:
       - '**'
 
-env:
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-
 jobs:
   build:
+    environment: CI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,8 +25,9 @@ jobs:
         working-directory: apps/web
         run: pnpm install
 
+      - name: Set environment variables
+        run: echo "${{ vars.CLERK_PUBLISHABLE_KEY }}" && echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.CLERK_PUBLISHABLE_KEY }}" >> "$GITHUB_ENV"
+
       - name: Build with opennextjs-cloudflare
         working-directory: apps/web
-        env:
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
         run: pnpm opennextjs-cloudflare build
