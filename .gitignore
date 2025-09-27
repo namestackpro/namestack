@@ -41,3 +41,7 @@ next-env.d.ts
 .wrangler
 # clerk configuration (can include secrets)
 /.clerk/
+
+
+# Add this line to your .gitignore file
+.DS_Store

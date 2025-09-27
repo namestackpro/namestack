@@ -16,7 +16,7 @@ const Dashboard = () => {
       <SidebarProvider>
         <AppSidebar />
         <main className="min-h-screen w-full flex flex-col gap-4 px-4">
-          <div className="  h-fit grid grid-cols-12">
+          <div className="  h-fit grid grid-cols-12 justify-center items-center">
             <div className=" h-16 col-span-1 flex px-4 items-center ">
               <SidebarTrigger />
             </div>
