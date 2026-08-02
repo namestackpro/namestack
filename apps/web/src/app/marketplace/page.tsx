@@ -4,30 +4,7 @@ import Link from 'next/link'
 import { connect } from '@namestack/sdk'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-interface Listing {
-  domain: string
-  price: string
-  seller: string
-}
-
-const sampleListings: Listing[] = [
-  {
-    domain: 'premium.xlm',
-    price: '500',
-    seller: 'GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF'
-  },
-  {
-    domain: 'defi.stellar',
-    price: '1200',
-    seller: 'GBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'
-  },
-  {
-    domain: 'nft.gallery',
-    price: '750',
-    seller: 'GCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
-  }
-]
+import { sampleListings } from '@/lib/sample-listings'
 
 export default function MarketplacePage() {
   const handleConnectWallet = async () => {
