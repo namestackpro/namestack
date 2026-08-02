@@ -105,6 +105,16 @@ export async function raiseDispute(escrowId: bigint): Promise<void> {
   ])
 }
 
+export async function resolveDispute(
+  escrowId: bigint,
+  releaseTo: string
+): Promise<void> {
+  await invokeContract('resolve_dispute', [
+    nativeToScVal(escrowId, { type: 'u64' }),
+    new Address(releaseTo).toScVal()
+  ])
+}
+
 async function invokeContract(
   method: string,
   args: xdr.ScVal[]
