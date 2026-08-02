@@ -76,28 +76,43 @@ export async function createEscrow({
   const buyer = await getPublicKey()
   const amountSmallestUnit = toTokenSmallestUnit(amount, decimals)
 
-  const sourceAccount = await client.getAccount(buyer)
+  const result = await invokeContract('create_escrow', [
+    new Address(buyer).toScVal(),
+    new Address(seller).toScVal(),
+    new Address(token).toScVal(),
+    nativeToScVal(amountSmallestUnit, { type: 'i128' }),
+    nativeToScVal(domainRef)
+  ])
+
+  if (!result.returnValue) {
+    throw new Error('create_escrow returned no escrow_id')
+  }
+  return BigInt(result.returnValue.u64().toString())
+}
+
+export async function confirmReceipt(escrowId: bigint): Promise<void> {
+  await invokeContract('confirm_receipt', [
+    nativeToScVal(escrowId, { type: 'u64' })
+  ])
+}
+
+async function invokeContract(
+  method: string,
+  args: xdr.ScVal[]
+): Promise<rpc.Api.GetSuccessfulTransactionResponse> {
+  const sourceAccount = await client.getAccount(await getPublicKey())
 
   const transaction = new TransactionBuilder(sourceAccount, {
     fee: BASE_FEE,
     networkPassphrase: NETWORK_PASSPHRASE
   })
-    .addOperation(
-      new Contract(ESCROW_CONTRACT_ID).call(
-        'create_escrow',
-        new Address(buyer).toScVal(),
-        new Address(seller).toScVal(),
-        new Address(token).toScVal(),
-        nativeToScVal(amountSmallestUnit, { type: 'i128' }),
-        nativeToScVal(domainRef)
-      )
-    )
+    .addOperation(new Contract(ESCROW_CONTRACT_ID).call(method, ...args))
     .setTimeout(30)
     .build()
 
   const simulation = await client.simulateTransaction(transaction)
   if (rpc.Api.isSimulationError(simulation)) {
-    throw new Error(`create_escrow simulation failed: ${simulation.error}`)
+    throw new Error(`${method} simulation failed: ${simulation.error}`)
   }
 
   const prepared = rpc.assembleTransaction(transaction, simulation).build()
@@ -108,22 +123,20 @@ export async function createEscrow({
   )
   if (sendResponse.status === 'ERROR') {
     throw new Error(
-      `create_escrow send failed: ${sendResponse.errorResult?.toXDR('base64') ?? 'unknown error'}`
+      `${method} send failed: ${sendResponse.errorResult?.toXDR('base64') ?? 'unknown error'}`
     )
   }
 
   const result = await pollTransaction(sendResponse.hash)
-  if (result.status === 'SUCCESS' && result.returnValue) {
-    return BigInt(result.returnValue.u64().toString())
+  if (result.status === 'SUCCESS') {
+    return result
   }
   if (result.status === 'FAILED') {
     throw new Error(
-      `create_escrow transaction ${sendResponse.hash} failed: ${describeTransactionFailure(result)}`
+      `${method} transaction ${sendResponse.hash} failed: ${describeTransactionFailure(result)}`
     )
   }
-  throw new Error(
-    `create_escrow transaction ${sendResponse.hash} did not succeed`
-  )
+  throw new Error(`${method} transaction ${sendResponse.hash} did not succeed`)
 }
 
 function describeTransactionFailure(
