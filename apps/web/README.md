@@ -2,7 +2,30 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Environment Variables
+
+Copy the example file and adjust if needed:
+
+```bash
+cp apps/web/.env.local.example apps/web/.env.local
+```
+
+The `.env.local.example` already contains real Stellar testnet values for the contract IDs — you can use it directly without looking up any addresses.
+
+**Required variables in `.env.local`:**
+
+| Variable                             | Description                      | Example                                                    |
+| ------------------------------------ | -------------------------------- | ---------------------------------------------------------- |
+| `NEXT_PUBLIC_SOROBAN_RPC_URL`        | Soroban RPC endpoint             | `https://soroban-testnet.stellar.org`                      |
+| `NEXT_PUBLIC_NETWORK_PASSPHRASE`     | Stellar network passphrase       | `Test SDF Network ; September 2015`                        |
+| `NEXT_PUBLIC_ESCROW_CONTRACT_ID`     | Deployed escrow contract address | `CDEBCEAR3GXUV6KO2T3AOWE5D5J4LDO46GMARBYRAPPD3IPF6GTWA7OP` |
+| `NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID` | USDC token contract on testnet   | `CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA` |
+
+### Wallet Requirement
+
+[Freighter](https://freighter.app/) browser extension is required for wallet connection and transaction signing. Install it before running the app.
+
+### Development Server
 
 ```bash
 pnpm dev
