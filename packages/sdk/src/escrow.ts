@@ -96,6 +96,15 @@ export async function confirmReceipt(escrowId: bigint): Promise<void> {
   ])
 }
 
+export async function raiseDispute(escrowId: bigint): Promise<void> {
+  const caller = await getPublicKey()
+
+  await invokeContract('raise_dispute', [
+    nativeToScVal(escrowId, { type: 'u64' }),
+    new Address(caller).toScVal()
+  ])
+}
+
 async function invokeContract(
   method: string,
   args: xdr.ScVal[]
