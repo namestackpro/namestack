@@ -1,14 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { createEscrow } from '@namestack/sdk'
-import { connect } from '@namestack/sdk/wallet'
+import { connect } from '@namestack/sdk'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-// Placeholder for future purchase flow implementation (step 11)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _createEscrow = createEscrow
 
 interface Listing {
   domain: string
