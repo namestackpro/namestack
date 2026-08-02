@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.31.10",
+    "@namestack/sdk": "workspace:*",
     "@opennextjs/cloudflare": "1.8.3",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-dialog": "^1.1.15",
