@@ -1,9 +1,11 @@
 import {
+  Account,
   Address,
   BASE_FEE,
   Contract,
   nativeToScVal,
   rpc,
+  scValToNative,
   TransactionBuilder,
   xdr
 } from '@stellar/stellar-sdk'
@@ -113,6 +115,100 @@ export async function resolveDispute(
     nativeToScVal(escrowId, { type: 'u64' }),
     new Address(releaseTo).toScVal()
   ])
+}
+
+export type EscrowStatus = 'Funded' | 'Released' | 'Refunded' | 'Disputed'
+
+export interface Escrow {
+  buyer: string
+  seller: string
+  token: string
+  amount: bigint
+  domain_ref: string
+  status: EscrowStatus
+  created_ledger: number
+}
+
+const ESCROW_STATUSES: readonly EscrowStatus[] = [
+  'Funded',
+  'Released',
+  'Refunded',
+  'Disputed'
+]
+
+const READ_ONLY_ACCOUNT =
+  'GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF'
+
+export async function getEscrow(escrowId: bigint): Promise<Escrow> {
+  const transaction = new TransactionBuilder(
+    new Account(READ_ONLY_ACCOUNT, '0'),
+    {
+      fee: BASE_FEE,
+      networkPassphrase: NETWORK_PASSPHRASE
+    }
+  )
+    .addOperation(
+      new Contract(ESCROW_CONTRACT_ID).call(
+        'get_escrow',
+        nativeToScVal(escrowId, { type: 'u64' })
+      )
+    )
+    .setTimeout(30)
+    .build()
+
+  const simulation = await client.simulateTransaction(transaction)
+  if (rpc.Api.isSimulationError(simulation)) {
+    throw new Error(`get_escrow simulation failed: ${simulation.error}`)
+  }
+  if (!simulation.result) {
+    throw new Error('get_escrow simulation returned no result')
+  }
+
+  return normalizeEscrow(scValToNative(simulation.result.retval))
+}
+
+function normalizeEscrow(decoded: unknown): Escrow {
+  if (typeof decoded !== 'object' || decoded === null) {
+    throw new Error(`get_escrow returned unexpected value: ${String(decoded)}`)
+  }
+  const { buyer, seller, token, amount, domain_ref, status, created_ledger } =
+    decoded as Record<string, unknown>
+
+  if (
+    typeof buyer !== 'string'
+    || typeof seller !== 'string'
+    || typeof token !== 'string'
+  ) {
+    throw new Error('get_escrow returned unexpected address value')
+  }
+  if (typeof amount !== 'bigint') {
+    throw new Error('get_escrow returned unexpected amount value')
+  }
+  if (typeof domain_ref !== 'string') {
+    throw new Error('get_escrow returned unexpected domain_ref value')
+  }
+  const rawStatus = Array.isArray(status) ? status[0] : status
+  if (
+    typeof rawStatus !== 'string'
+    || !ESCROW_STATUSES.includes(rawStatus as EscrowStatus)
+  ) {
+    throw new Error(
+      `get_escrow returned unexpected status value: ${String(rawStatus)}`
+    )
+  }
+  if (typeof created_ledger !== 'number') {
+    throw new Error('get_escrow returned unexpected created_ledger value')
+  }
+
+  return {
+    buyer,
+    seller,
+    token,
+    amount,
+    domain_ref,
+    status: rawStatus as EscrowStatus,
+    created_ledger
+  }
 }
 
 async function invokeContract(
