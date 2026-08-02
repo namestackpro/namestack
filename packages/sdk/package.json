@@ -2,6 +2,7 @@
   "name": "@namestack/sdk",
   "version": "0.1.0",
   "description": "Namestack SDK",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -18,7 +19,11 @@
     "dev": "tsc -w",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^16.2.0"
+  },
   "devDependencies": {
+    "@types/node": "^20.19.17",
     "typescript": "^5"
   }
 }
