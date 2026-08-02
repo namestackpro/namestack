@@ -1,12 +1,13 @@
 import {
   getAddress,
+  requestAccess,
   signTransaction as freighterSignTransaction
 } from '@stellar/freighter-api'
 
 import { NETWORK_PASSPHRASE } from './client.js'
 
 export async function connect(): Promise<string> {
-  const { address, error } = await getAddress()
+  const { address, error } = await requestAccess()
   if (error || !address) {
     throw new Error(
       `Freighter connection failed: ${error?.message ?? 'no address returned'}`
@@ -16,7 +17,13 @@ export async function connect(): Promise<string> {
 }
 
 export async function getPublicKey(): Promise<string> {
-  return connect()
+  const { address, error } = await getAddress()
+  if (error || !address) {
+    throw new Error(
+      `Freighter getPublicKey failed: ${error?.message ?? 'no address returned — call connect() first'}`
+    )
+  }
+  return address
 }
 
 export async function signTransaction(transactionXdr: string): Promise<string> {
