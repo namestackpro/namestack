@@ -1,13 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from '@clerk/nextjs'
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import {
   ArrowRight,
   Gauge,
@@ -546,19 +540,17 @@ function Footer() {
 
 export default function Home() {
   return (
-    <ClerkProvider>
-      <div className="min-h-screen bg-black font-sans text-[#f5f5f7] antialiased selection:bg-white/20">
-        <SiteHeader />
-        <main>
-          <Hero />
-          <MetricsStrip />
-          <Features />
-          <Workflow />
-          <Escrow />
-          <FinalCta />
-        </main>
-        <Footer />
-      </div>
-    </ClerkProvider>
+    <div className="min-h-screen bg-black font-sans text-[#f5f5f7] antialiased selection:bg-white/20">
+      <SiteHeader />
+      <main>
+        <Hero />
+        <MetricsStrip />
+        <Features />
+        <Workflow />
+        <Escrow />
+        <FinalCta />
+      </main>
+      <Footer />
+    </div>
   )
 }
