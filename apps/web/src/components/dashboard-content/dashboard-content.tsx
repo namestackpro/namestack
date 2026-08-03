@@ -1,45 +1,26 @@
-
-
-import React from 'react';
-import { Button } from '@/components/ui/button'
-import { StatsCards } from '../stat-card/stat-card';
-import { House, Settings } from 'lucide-react';
-import TopdomainViewer from '../topdomainviewer/topdomainviewer';
-import PerformanceGraph from '../performancegraph/performancegraph';
-import Insight from '../insight/insight';
-
-
+import React from 'react'
+import { StatsCards } from '../stat-card/stat-card'
+import TopdomainViewer from '../topdomainviewer/topdomainviewer'
+import PerformanceGraph from '../performancegraph/performancegraph'
+import Insight from '../insight/insight'
 
 export function DashboardContent() {
-
-    
-    
-
-
   return (
-    <div className="flex flex-col h-fit w-full">
+    <div className="flex h-fit w-full flex-col pb-12 pt-2">
+      <div className="px-4 md:px-8">
+        <StatsCards />
 
-      {/* Main Content */}
-      <div className="flex flex-col py-3 px-2 bg-background overflow-auto ">
-        <div >
-            <StatsCards />
-        </div>
-    
-        <div className='mt-16 grid max-lg:grid-cols-1 grid-cols-3 gap-5 '>
-          <div className=" max-lg:col-span-1 lg:col-span-2 ">
-            <div className=" ">
-              <TopdomainViewer />
-            </div>
-            <div className=" ">
-              <PerformanceGraph />
-            </div>
+        <div className="mt-7 grid max-lg:grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-6 lg:col-span-2">
+            <PerformanceGraph />
+            <TopdomainViewer />
           </div>
 
-          <div className=' h-full col-span-1'>
+          <div className="flex h-full flex-col gap-6 lg:col-span-1">
             <Insight />
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,40 +1,77 @@
 'use client'
 
+import Link from 'next/link'
+import { ClerkProvider } from '@clerk/nextjs'
+import { Store, Upload, Vault } from 'lucide-react'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import AppSidebar from '@/components/app-sidebar/app-sidebar'
-import { ClerkProvider } from '@clerk/nextjs'
-import { useState } from 'react'
 import DashboardHeader from '@/components/dashboard-header/dashboard-header'
 import { DashboardContent } from '@/components/dashboard-content/dashboard-content'
-import { Heading } from '@radix-ui/themes'
+
+const quickActions = [
+  { label: 'Upload domains', href: '/domain-upload', icon: Upload },
+  { label: 'View marketplace', href: '/marketplace', icon: Store },
+  { label: 'Domain vault', href: '/dashboard/domainvault', icon: Vault }
+]
 
 const Dashboard = () => {
-  const [sideNav, setSiteNav] = useState(true)
-
   return (
     <ClerkProvider>
       <SidebarProvider>
         <AppSidebar />
-        <main className="min-h-screen w-full flex flex-col gap-4 px-4">
-          <div className="  h-fit grid grid-cols-12">
-            <div className=" h-16 col-span-1 flex px-4 items-center ">
-              <SidebarTrigger />
-            </div>
-            <div className=" h-16 col-span-11 ">
-              <DashboardHeader />
-            </div>
-          </div>
 
-          <div className="px-8 py-4 h-fit flex flex-col gap-2.5">
-            <Heading className="text-lg font-bold text-[#8d4485]">
-              Overview
-            </Heading>
-            <p className="text-gray-700 text-sm font-medium">
-              Harness the power of AI to optimize your domain investments
-            </p>
-          </div>
+        <main className="relative min-h-screen w-full overflow-hidden">
+          <div
+            aria-hidden
+            className="bg-grid-faint mask-fade-top pointer-events-none absolute inset-0"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-48 right-[-10%] h-[560px] w-[560px] rounded-full bg-[radial-gradient(closest-side,rgba(99,102,241,0.14),transparent)] blur-3xl dark:bg-[radial-gradient(closest-side,rgba(110,107,246,0.16),transparent)]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-[-20%] left-[-8%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(closest-side,rgba(79,209,232,0.08),transparent)] blur-3xl dark:bg-[radial-gradient(closest-side,rgba(79,209,232,0.1),transparent)]"
+          />
 
-          <div>
+          <div className="relative flex flex-col px-4 md:px-6">
+            <div className="grid h-16 grid-cols-12 items-center">
+              <div className="col-span-1 flex items-center px-4">
+                <SidebarTrigger />
+              </div>
+              <div className="col-span-11">
+                <DashboardHeader />
+              </div>
+            </div>
+
+            <section className="flex flex-col gap-7 px-4 pb-2 pt-6 md:px-8 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-xl">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                  Overview
+                </p>
+                <h1 className="mt-2.5 text-2xl font-bold tracking-tight md:text-3xl">
+                  Portfolio Command Center
+                </h1>
+                <p className="mt-2.5 text-[14.5px] leading-relaxed text-muted-foreground">
+                  Monitor valuation, renewals, escrow exposure, and AI
+                  opportunities across your domain stack.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5">
+                {quickActions.map((action) => (
+                  <Link
+                    key={action.href}
+                    href={action.href}
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-[13px] font-medium text-foreground shadow-sm transition duration-300 hover:-translate-y-px hover:border-foreground/25 hover:shadow-md"
+                  >
+                    <action.icon className="h-4 w-4 text-muted-foreground" />
+                    {action.label}
+                  </Link>
+                ))}
+              </div>
+            </section>
+
             <DashboardContent />
           </div>
         </main>
@@ -42,4 +79,5 @@ const Dashboard = () => {
     </ClerkProvider>
   )
 }
+
 export default Dashboard
