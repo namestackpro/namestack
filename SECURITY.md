@@ -9,6 +9,7 @@ funds itself and contains no fund-custody logic; that lives entirely in the
 and its own audit status.
 
 Security concerns relevant to this repo include:
+
 - Wallet connection and transaction-signing flows (`packages/sdk/src/wallet.ts`)
 - Correct construction of contract calls and correct decimal/unit handling for
   token amounts (`packages/sdk/src/escrow.ts`)
@@ -24,6 +25,7 @@ public issue.
 GitHub's "Report a vulnerability" feature under this repo's Security tab.
 
 Please include:
+
 - A description of the issue and its potential impact
 - Steps to reproduce
 - Any suggested fix, if you have one
