@@ -24,11 +24,12 @@ const GHOST_BTN =
 
 function LogoMark() {
   return (
-    <span
-      aria-hidden
-      className="flex h-6 w-6 items-center justify-center rounded-lg iris-mesh"
-    >
-      <span className="h-[7px] w-[7px] rounded-full bg-black" />
+    <span className="relative flex h-6 w-6 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+      <span
+        aria-hidden
+        className="absolute right-[2.5px] top-[2px] h-[7px] w-[7px] rotate-45 rounded-[2px] bg-white/25"
+      />
+      <span className="block h-[11px] w-[11px] rotate-45 rounded-[3px] iris-mesh" />
     </span>
   )
 }
@@ -43,7 +44,7 @@ function SiteHeader() {
         <Link href="/" className="flex items-center gap-2.5">
           <LogoMark />
           <span className="text-[15px] font-semibold tracking-tight text-white">
-            NameStack
+            Namestack
           </span>
         </Link>
 
@@ -236,7 +237,7 @@ function Hero() {
           Turn your domain portfolio into an intelligent asset desk.
         </h1>
         <p className="animate-rise-delay-2 mx-auto mt-7 max-w-xl text-pretty text-lg leading-relaxed text-white/50">
-          NameStack tracks renewals, domain health, valuation movement, and AI
+          Namestack tracks renewals, domain health, valuation movement, and AI
           opportunity signals — and settles every sale through on-chain escrow
           on Stellar.
         </p>
@@ -515,7 +516,7 @@ function Footer() {
         <div className="flex items-center gap-2.5">
           <LogoMark />
           <span className="text-sm font-semibold tracking-tight text-white">
-            NameStack
+            Namestack
           </span>
         </div>
         <nav
@@ -536,7 +537,7 @@ function Footer() {
           </Link>
         </nav>
         <p className="text-[12px] text-white/30">
-          © 2026 NameStack · Built on Stellar
+          © 2026 Namestack · Built on Stellar
         </p>
       </div>
     </footer>

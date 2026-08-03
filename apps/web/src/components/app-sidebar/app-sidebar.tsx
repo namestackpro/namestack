@@ -48,7 +48,7 @@ const items = [
     url: '/dashboard/report',
     icon: ChartNoAxesCombined
   },
-  { title: 'AI Tracking', url: '#', icon: Bot }
+  { title: 'AI Tracking', url: '/dashboard/renewals', icon: Bot }
 ]
 
 export function AppSidebar() {

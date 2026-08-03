@@ -1,178 +1,291 @@
-import { AlertCircle, ArrowUpRight, BarChart, DollarSign, HelpCircle, Lightbulb, TrendingUp } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowUpRight,
+  BarChart,
+  DollarSign,
+  Globe,
+  HelpCircle,
+  Lightbulb,
+  TrendingUp,
+  type LucideIcon
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
 
+type Priority = 'high priority' | 'medium priority' | 'low priority'
 
+const priorityStyles: Record<Priority, string> = {
+  'high priority':
+    'bg-rose-500/10 text-rose-600 dark:bg-rose-400/10 dark:text-rose-400',
+  'medium priority':
+    'bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400',
+  'low priority':
+    'bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400'
+}
 
-const aiinsight = () => {
+const insights: {
+  domain: string
+  est_value: string
+  action: string
+  description: string
+  icon: LucideIcon
+  priority: Priority
+}[] = [
+  {
+    domain: 'creativespace.com',
+    est_value: '25,090',
+    action: 'Acquire',
+    description:
+      'Matches trending search patterns in the design industry with 73% higher engagement than similar domains.',
+    icon: TrendingUp,
+    priority: 'high priority'
+  },
+  {
+    domain: 'minimalstudio.cv',
+    est_value: '3,100',
+    action: 'List for sale',
+    description:
+      'Demand up 28% for this keyword set — valuation at a two-year high, signaling an optimal selling window.',
+    icon: DollarSign,
+    priority: 'medium priority'
+  },
+  {
+    domain: 'modernstudio.io',
+    est_value: '7,800',
+    action: 'Review',
+    description:
+      'Potential trademark conflict detected with "ModernSpaces Inc.", who recently filed in similar categories.',
+    icon: AlertCircle,
+    priority: 'low priority'
+  },
+  {
+    domain: 'cupidlove.io',
+    est_value: '4,800',
+    action: 'Investigate',
+    description:
+      'Seasonal demand building ahead of Q4 — expect renewed buyer interest within the quarter.',
+    icon: TrendingUp,
+    priority: 'medium priority'
+  },
+  {
+    domain: 'blairwoldorf.xyz',
+    est_value: '10,800',
+    action: 'Review Offer',
+    description:
+      'Inbound offer sits below estimate — counter at 15% above current valuation.',
+    icon: DollarSign,
+    priority: 'high priority'
+  }
+]
 
-const insight = [
-    { id: 1, domain: 'creativespace.com', est_value: '25,090', action: 'Acquire', insight_description: 'This domain matches trending search patterns in design industry with 73% higher engagement rates than similar domains.', icon: <TrendingUp className="h-5 w-5"/>, priority: 'high priority' },
-    { id: 2, domain: 'minimalstudio.cv', est_value: '3,100', action: 'List for sale', insight_description: 'Market demand has increased 28% for this keyword set. Current valuation is at a 2-year high point, suggesting an optimal selling window.', icon: <DollarSign className="h-5 w-5"/>, priority: 'medium priority' },
-    { id: 3, domain: 'modernstudio.io', est_value: '7,800', action: 'Review', insight_description: 'Potential trademark conflict detected with "ModernSpaces Inc." who recently filed for trademark protection in similar categories.', icon: <AlertCircle className="h-5 w-5"/>, priority: 'low priority' },
-    { id: 4, domain: 'cupidlove.io', est_value: '4,800', action: 'Investigate', insight_description: 'Potential trademark conflict detected with "ModernSpaces Inc." who recently filed for trademark protection in similar categories.', icon: <AlertCircle className="h-5 w-5"/>, priority: 'medium priority' },
-    { id: 5, domain: 'blairwoldorf.xyz', est_value: '10,800', action: 'Review Offer', insight_description: 'Potential trademark conflict detected with "ModernSpaces Inc." who recently filed for trademark protection in similar categories.', icon: <DollarSign className="h-5 w-5"/>, priority: 'high priority' },
+const tips = [
+  'Diversify categories',
+  'Explore emerging TLDs',
+  'Leverage market trends'
+]
 
-  ];
+const intelligence: {
+  content: string
+  description: string
+  icon: LucideIcon
+}[] = [
+  {
+    content: 'Industry Trend',
+    description:
+      'Design and minimalism-focused domains have seen a 24% increase in search volume over the last quarter.',
+    icon: TrendingUp
+  },
+  {
+    content: 'Emerging Keywords',
+    description:
+      '"Sustainable," "minimal," and "studio" show strong growth potential in premium domain valuations.',
+    icon: Lightbulb
+  },
+  {
+    content: 'TLD Analysis',
+    description:
+      'While .com remains dominant, .io domains in the tech space appreciated 18% faster this year.',
+    icon: Globe
+  }
+]
 
-  const tips= ['Diversify categorieas', 'Explore emerging TLDs', 'Leverage market trends'];
-
-  const intelligence = [
-    { id: 1, content: 'Industry Trend', insight_description: ' Design and minimalism-focused domains have seen a 24% increase in search volume over the last quarter.'},
-    { id: 2, content: 'Emerging Keywords', insight_description: '"Sustainable," "minimal," and "studio" are showing strong growth potential in premium domain valuations.'},
-    { id: 3, content: 'TLD Analysis', insight_description: 'While .com remains dominant, .io domains in the tech space have appreciated 18% faster this year.'},
-
-  ];
-
-
-
-
+const Aiinsight = () => {
   return (
+    <div className="flex w-full flex-col gap-6 px-4 pb-14 pt-8 md:px-8">
+      <div className="grid max-lg:grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="rounded-2xl border border-black/[0.06] bg-card p-6 shadow-sm dark:border-white/[0.08] lg:col-span-2">
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="text-[15px] font-semibold tracking-tight">
+              Latest insights
+            </h2>
+            <span className="font-mono text-xs text-muted-foreground">
+              {insights.length} insights
+            </span>
+          </div>
 
+          <div className="mt-2 divide-y divide-black/[0.04] dark:divide-white/[0.05]">
+            {insights.map((insight) => (
+              <div key={insight.domain} className="flex gap-3.5 py-4">
+                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/[0.04] dark:bg-white/[0.06]">
+                  <insight.icon className="h-4 w-4 text-muted-foreground" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-mono text-[12.5px] font-medium text-foreground">
+                      {insight.domain}
+                    </p>
+                    <span
+                      className={cn(
+                        'rounded-full px-2.5 py-0.5 text-[10.5px] font-semibold',
+                        priorityStyles[insight.priority]
+                      )}
+                    >
+                      {insight.priority}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-muted-foreground">
+                    {insight.description}
+                  </p>
+                  <div className="mt-2.5 flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-[10.5px] font-semibold text-foreground/80 dark:bg-white/[0.07]">
+                      {insight.action}
+                    </span>
+                    <span className="font-mono text-[11.5px] tabular-nums text-muted-foreground">
+                      est. ${insight.est_value}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
+        <div className="flex flex-col gap-6">
+          <div className="rounded-2xl border border-black/[0.06] bg-card p-6 shadow-sm dark:border-white/[0.08]">
+            <h2 className="text-[15px] font-semibold tracking-tight">
+              AI Recommendations
+            </h2>
 
-    <div className="w-auto max-md:px-5 px-2">
-      {/* latest insight */}
-                    <div className='grid max-lg:grid-cols-1 lg:grid-cols-3 gap-3'>
-                        <div className=" col-span-2 my-8 w-auto py-6 bg-inherit rounded-2xl shadow-xl border border-green-200">
-                            <div className="h-fit px-4">
-                                <div className="flex justify-between items-center mb-4 border-b-[1px] border-gray-300 pb-4">
-                                    <h1 className="text-base font-bold "> Latest insight</h1>
-                                    <span className="text-sm text-gray-600 font-medium cursor-pointer hover:underline">
-                                        6 insights
-                                    
-                                    </span>    
-                                </div>
+            <div className="mt-6 flex flex-col gap-5 rounded-2xl border border-black/[0.05] bg-black/[0.02] p-5 dark:border-white/[0.06] dark:bg-white/[0.03]">
+              <div className="flex items-center gap-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-400/10">
+                  <Lightbulb className="h-4 w-4 text-amber-500" />
+                </span>
+                <h3 className="text-[13.5px] font-semibold tracking-tight">
+                  Weekly Portfolio Insight
+                </h3>
+              </div>
 
-                                <div className="grid grid-cols-1 gap-4 my-4 pt-2">
-                                    {/* Example domain cards */}
-                                    {insight.map((top, index) => (
-                                        <div key={index} className="p-4  hover:shadow-md flex flex-col gap-2.5 transition-all duration-700 hover:bg-gray-600/10 rounded-md">
-                                            <div className="  flex items-center gap-2 justify-between mb-1.5 ">
-                                                <div className="flex items-center gap-4 w-full ">
-                                                    <div className={`h-5 w-5 text-primary rounded-xl flex items-center justify-center `} >
-                                                        <div className="h-5 w-5 ">{top.icon}</div>
-                                                    </div>
-                                                    <div className='w-full flex flex-col gap-1'>
-                                                        <div className='flex flex-row justify-between items-center'>
-                                                            <h2 className="text-lg font-semibold ">{top.domain}</h2>
-                                                            {top.priority === 'high priority' ? <p className="text-sm font-bold text-slate-700 px-4 bg-red-300 rounded-lg py-[1px] w-fit"> {top.priority}</p> : top.priority === 'medium priority' ? <p className="text-sm font-bold text-slate-700 px-4 bg-yellow-200 rounded-lg py-[1px] w-fit"> {top.priority}</p> : <p className="text-sm font-bold text-slate-700 px-4 bg-green-200 rounded-lg py-[1px] w-fit"> {top.priority}</p>}
-                                                            
-                                                        </div>
-                                                        <div>
-                                                            <p className="text-sm text-muted-foreground ">{top.insight_description}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
+              <div className="flex items-center gap-4">
+                <svg width="58" height="58" viewBox="0 0 58 58" aria-hidden>
+                  <circle
+                    cx="29"
+                    cy="29"
+                    r="23"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeOpacity="0.08"
+                    strokeWidth="6"
+                  />
+                  <circle
+                    cx="29"
+                    cy="29"
+                    r="23"
+                    fill="none"
+                    stroke="#10b981"
+                    strokeWidth="6"
+                    strokeDasharray="144.5"
+                    strokeDashoffset="18.8"
+                    strokeLinecap="round"
+                    transform="rotate(-90 29 29)"
+                  />
+                </svg>
+                <div>
+                  <p className="font-mono text-2xl font-medium tracking-tight tabular-nums">
+                    87
+                    <span className="text-sm text-muted-foreground">/100</span>
+                  </p>
+                  <span className="mt-1.5 inline-block rounded-full bg-emerald-500/10 px-2.5 py-1 font-mono text-[11px] font-medium text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400">
+                    +11% this month
+                  </span>
+                </div>
+              </div>
 
-                                                
+              <p className="text-[12.5px] leading-relaxed text-muted-foreground">
+                Your portfolio is performing well with strong growth potential,
+                based on domain quality, market trends, and portfolio diversity.
+              </p>
 
-                                            </div>
-                                            
-                                            <div className="flex justify-between items-center mt-2">
-                                                <div>
-                                                    <p className="text-xs font-medium text-slate-700 px-3 bg-primary/10 rounded-xl py-[2px]"> {top.action}</p>
-                                                </div>
-                                                <div>
-                                                    <p className='text-sm  text-muted-foreground'> Est.value: {top.est_value}</p>
-                                                    
+              <button
+                type="button"
+                className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-black/[0.08] py-2 text-[13px] font-medium text-foreground/80 transition-colors hover:border-foreground/25 dark:border-white/[0.1]"
+              >
+                View full analysis
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                
-                                </div>
-                            </div>
-                        </div>
+          <div className="rounded-2xl border border-black/[0.06] bg-card p-6 shadow-sm dark:border-white/[0.08]">
+            <div className="flex items-center gap-2.5">
+              <HelpCircle className="h-4 w-4 text-amber-500" />
+              <h2 className="text-[15px] font-semibold tracking-tight">
+                Optimization Tips
+              </h2>
+            </div>
 
-                        <div>
-                            <div className=" col-span-1 my-8 w-auto py-6 bg-inherit rounded-2xl shadow-xl border border-gray-200">
-                                <div className="h-fit px-4">
-                                    <div className="flex justify-between items-center mb-4 border-b-[1px] border-gray-300 pb-4">
-                                        <h1 className="text-base font-bold "> AI Recommendations</h1>
-                                          
-                                    </div>
+            <div className="mt-4 flex flex-col gap-1">
+              {tips.map((tip, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-black/[0.03] dark:hover:bg-white/[0.04]"
+                >
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-black/[0.04] dark:bg-white/[0.06]">
+                    <BarChart className="h-3.5 w-3.5 text-muted-foreground" />
+                  </span>
+                  <span className="flex-1 text-[13px] font-medium text-foreground/80">
+                    {tip}
+                  </span>
+                  <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
 
-                                    <div className="gap-4 my-6 flex flex-col px-4 py-3 bg-slate-900 rounded-2xl transition-all duration-700 hover:scale-[1.03] hover:shadow-lg hover:shadow-primary/20">
-                                        <div className='flex flex-row gap-2'>
-                                            <Lightbulb className='h-6 w-6 text-yellow-400'/>
-                                            <div className="text-white text-lg font-black">Weekly Portfolio Insight</div>
-                                        </div>
-                                        <div className="flex flex-col text-white gap-2">
-                                            <div className='flex flex-row items-center justify-between w-full px-2'>
-                                                <span className="text-white text-3xl font-bold ">87 <span className="text-lg">/100</span></span>
-                                                <span className='text-sm font-bold text-green-500 '>+11%</span>
-                                            </div>
-                                            <div className="w-full bg-gray-600 rounded-full h-2 dark:bg-gray-100">
-                                                <div className="bg-gray-100 h-2 rounded-full" style={{width: '87%'}}></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-100 my-1">Your portfolio is performing well with strong growth potential, based on domain quality, market trends, and portfolio diversity.</p>
-                                        </div>
-                                        <div className='text-white text-sm font-medium mt-4 cursor-pointer hover:text-gray-300 flex items-center gap-1 flex-row border border-white hover:border-gray-300 justify-center py-2 rounded-2xl'>
-                                            <button className='flex items-center gap-1 flex-row'>View full Analysis <ArrowUpRight className='w-4 h-4'/></button>
-                                        </div>
-                                    </div>
-
-                                    <div className="gap-2 my-6 mt-10 flex flex-col px-1 py-3 bg-gray-50 rounded-xl shadow-md hover:shadow-md ">
-                                        <div>
-                                            <div className='flex flex-row gap-2 justify-start items-center w-full border-b-[1px] border-gray-200 pb-4'>
-                                                <HelpCircle className='h-5 w-5 text-orange-600'/>
-                                                <div className="text-slate-700 text-lg font-black">Optimization Tips</div>
-                                            </div>
-
-                                        </div>
-                                        <div className='gap-2 lg:gap-3 my-4 flex flex-col'>
-                                            {/* list of tips */}
-                                            {tips.map((tip, index) => (
-                                                <button key={index} className='flex flex-row gap-2.5  items-center mt-1 justify-start w-full hover:bg-gray-600/10 px-2 py-1 rounded-md cursor-pointer'>
-                                                    <div className='h-5 w-5 bg-gray-600/10 text-primary rounded-sm flex items-center justify-center mt-1'>
-                                                        <BarChart className=' '/>
-                                                    </div>
-                                                    <div className='flex flex-row gap-2 justify-between w-full'>
-                                                        <p className='text-xs lg:text-sm text-slate-700 font-medium'>{tip}</p>
-                                                        <div className=' text-primary rounded-sm flex items-center justify-center mt-1'>
-                                                            <ArrowUpRight className='w-4 h-4'/>
-                                                        </div>
-                                                    </div>
-                                                </button>
-                                            ))}
-                                            
-                                        </div>
-                                        
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    {/* Intelligence*/}
-                    <div className=' mx-2 w-auto h-fit'>
-                        <div className='my-8 w-auto mx-8 py-6 px-3 bg-inherit rounded-2xl shadow-xl border border-gray-200'>
-                            <div className='flex flex-row justify-between items-center mb-4 border-b-[1px] border-gray-300 pb-4'>
-                                <h2>Market Intelligence</h2>
-                            </div>
-                            <div className='grid max-lg:grid-cols-1 lg:grid-cols-3 gap-4 p-4'>
-                                {intelligence.map((info) => (
-                                    <div key={info.id} className='p-4 m-2 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-500 hover:scale-[1.01] flex flex-col gap-3 hover:bg-foreground/5'>
-                                        <h3 className='text-md font-bold text-foreground mb-2'>{info.content}</h3>
-                                        <p className='text-sm text-muted-foreground'>{info.insight_description}</p>
-                                        <div className='flex flex-row justify-start items-center gap-1 mt-4 cursor-pointer hover:text-gray-800 text-primary font-medium hover:underline w-fit'>
-                                            <button className='text-sm text-muted-foreground'>Learn more </button>
-                                            <ArrowUpRight className='h-4 w-4 text-muted-foreground'/>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            
-                        </div>
-                    </div>
-      
+      <div className="rounded-2xl border border-black/[0.06] bg-card p-6 shadow-sm dark:border-white/[0.08]">
+        <h2 className="text-[15px] font-semibold tracking-tight">
+          Market Intelligence
+        </h2>
+        <div className="mt-4 grid max-lg:grid-cols-1 lg:grid-cols-3 gap-4">
+          {intelligence.map((info) => (
+            <div
+              key={info.content}
+              className="rounded-xl border border-black/[0.05] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-black/[0.1] hover:shadow-sm dark:border-white/[0.06] dark:hover:border-white/[0.12]"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-black/[0.04] dark:bg-white/[0.06]">
+                <info.icon className="h-4 w-4 text-muted-foreground" />
+              </span>
+              <h3 className="mt-4 text-[13.5px] font-semibold tracking-tight">
+                {info.content}
+              </h3>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted-foreground">
+                {info.description}
+              </p>
+              <button
+                type="button"
+                className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Learn more
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
 
-
-export default aiinsight
+export default Aiinsight

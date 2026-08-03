@@ -1,57 +1,50 @@
+import React from 'react'
+import { DollarSign, Target, TrendingUp, ShieldAlert } from 'lucide-react'
+import { aiStat } from '@/Utils/userDatabase'
+import {
+  StatCard,
+  type StatCardProps,
+  type StatTone
+} from '../stat-card/stat-card'
 
-import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import {  TrendingDown, TrendingUp, BarChart2,  } from 'lucide-react';
-import {  aiStat } from '@/Utils/userDatabase';
+const descriptions = [
+  'quality-weighted score',
+  '12-month outlook',
+  'vs. comparable sales',
+  'exposure-adjusted'
+]
 
+const icons = [DollarSign, TrendingUp, Target, ShieldAlert]
 
+const tones: StatTone[] = ['up', 'up', 'neutral', 'up']
 
-const  ReportStatcard = () => {
+const sparks = [
+  [40, 44, 48, 52, 56, 60, 64],
+  [30, 34, 36, 40, 44, 46, 50],
+  [50, 50, 48, 52, 51, 54, 55],
+  [60, 62, 64, 66, 68, 70, 72]
+]
 
+const ReportStatcard = () => {
+  const cards: StatCardProps[] = aiStat.stats.map((stat, index) => ({
+    value: `${stat.value}/100`,
+    label: stat.label,
+    description: descriptions[index],
+    gains: stat.gains,
+    icon: icons[index],
+    tone: tones[index],
+    spark: sparks[index]
+  }))
 
-
-    const stats = (aiStat.stats)
-
-
-  
   return (
-
-     <div className='w-[100%] h-fit bg-background'>
-        <div className='flex flex-col px-4 py-10 bg-background overflow-auto '>
-            <h1 className='text-2xl font-bold text-foreground'>AI Insights</h1>
-            <p className='text-sm font-medium text-foreground'>Intelligent analysis and recommendations for your domain portfolio.</p>
-        </div>
-
-                    {/* Stat Card */}
-                    <div className='flex flex-col py-6 px-4 mx-2 w-full h-fit overflow-auto '>
-                        <div className="grid max-lg:grid-cols-1 lg:grid-cols-4 gap-4 mb-6 ">
-
-                            {stats.map((stat, index) => (
-                                <Card key={index} className="bg-inherit rounded-2xl shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-xl hover:bg-card/80 border border-gray-200 flex flex-row h-fit ">
-                                
-                                    <CardContent className=" flex flex-col gap-2.5 w-full h-fit  mt-3 ">
-                                        <div className="text-sm font-bold text-muted-foreground  w-fit">{stat.label}</div> 
-                                        <div className={`text-3xl font-bold text-black w-fit flex flex-row items-end`}>
-                                            {stat.value} <span className="text-lg">/ 100</span>
-                                            <div className='flex flex-row gap-1  items-end'>
-                                                {stat.gains > 0 ? (
-                                                    <TrendingUp className={`h-5 w-5 text-green-500 inline-block ml-2`} />
-                                                ) : ( 
-                                                    <TrendingDown className={`h-5 w-5 text-red-500 inline-block ml-2`} />
-                                                )}
-                                                <span className='text-sm '>{stat.gains}</span>
-                                            </div>
-                                        </div>
-                                        
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
+    <div className="px-4 pt-6 md:px-8">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((card, index) => (
+          <StatCard key={index} {...card} />
+        ))}
+      </div>
     </div>
-
-  
-  );
+  )
 }
 
 export default ReportStatcard
