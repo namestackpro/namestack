@@ -1,42 +1,77 @@
-# namestack
+# NameStack
 
+A domain portfolio manager for resellers — track domain health, renewals, and
+resale value, with a Stellar-powered escrow marketplace for buying and selling
+domains on-chain.
 
-## Installation/Setup
-We use [pnpm workspaces](https://pnpm.io) and [Turborepo](https://turborepo.com) to
-manage the (mono)repo.
+Payments and escrow settle through a Soroban smart contract in
+[namestack-contracts](https://github.com/namestackpro/namestack-contracts) —
+funds are held on-chain until the buyer confirms receipt, instead of relying on a
+third-party escrow service.
 
-Simply run `pnpm install` from the root directory to install dependencies across all
-apps/packages in the repository.
+## Maintainer
 
-## Adding new dependencies
-Most dependency installations will happen _inside_ one of our apps or local packages.
-Always make sure you're inside the directory for the app you want to install a dependency for
-e.g. for the `web` app:
+| | |
+|---|---|
+| **cisco_91** | [GitHub](https://github.com/ciscokwiz) · Discord: **ciscokwiz** |
+
+Questions or security concerns: open an issue, or reach out on Discord.
+
+## Contents
+
+- [Repo structure](#repo-structure)
+- [Getting started](#getting-started)
+- [Environment variables](#environment-variables)
+- [Known issues](#known-issues)
+- [Contributing](#contributing)
+
+## Repo structure
+
+This is a pnpm/Turborepo monorepo:
+
+```
+apps/
+  web/       Next.js dashboard, domain vault, and escrow marketplace
+  worker/    Cloudflare Worker backend
+packages/
+  sdk/       Stellar/Soroban client library — wallet connection, contract calls,
+             error decoding. Used by apps/web.
+```
+
+## Getting started
 
 ```bash
-cd apps/web/
-pnpm add [dependency] -E
-```
-or for dev-dependencies:
-
-```bash
-cd apps/web/
-pnpm add [dependency] -DE
+pnpm install
+cp apps/web/.env.local.example apps/web/.env.local
+pnpm --filter namestack dev
 ```
 
-For dependencies that are **required** to be in the project root because they are used e.g.
-for administering the repo (like `turbo`), you can install them from the root directory using
-pnpm's `-w` flag :
-```bash
-pnpm add turbo -wE
-```
+You'll also need the [Freighter](https://freighter.app) browser extension,
+switched to Testnet, to connect a wallet and test the marketplace flow.
 
-### Exact versions
-You'll note that all the commands above include pnpm's `-E` flag. We almost exclusively
-install exact versions of dependencies to make sure dependency versions are consistent
-across development, CI, canary and production machines, never mind the
-[supply](https://www.ox.security/blog/npm-2-0-hack-40-npm-packages-hit-in-major-supply-chain-attack/)
-[chain](https://www.paloaltonetworks.com/blog/cloud-security/npm-supply-chain-attack/)
-security risks that come with automatic patch installations.
+## Environment variables
 
-Use `-E` or `--save-exact` to make sure dependencies will be saved using exact versions.
+See [`apps/web/README.md`](apps/web/README.md) for the full list. The example
+file already contains real Stellar testnet contract addresses — no lookup
+required to get started.
+
+## Known issues
+
+- **Production build currently fails** on `/dashboard/domainvault` due to a missing
+  Clerk `publishableKey` — this is a pre-existing configuration gap unrelated to
+  the escrow marketplace feature, tracked in open issues. `pnpm dev` and all
+  typechecking work fine in the meantime.
+- **No CI workflow yet** for `apps/web` — also tracked, planned alongside branch
+  protection setup.
+- Dependency vulnerabilities flagged by Dependabot — see [`SECURITY.md`](SECURITY.md).
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for setup, project structure, and PR
+guidelines.
+
+## Contributors
+
+<a href="https://github.com/namestackpro/namestack/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=namestackpro/namestack" />
+</a>
