@@ -9,7 +9,7 @@ export const sampleListings: Listing[] = [
   {
     domain: 'premium.xlm',
     price: '500',
-    seller: 'GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF'
+    seller: 'GCI36CN2X6QZSXOUK3K6PO5F3YOCVCU3PQYOFU65NARLJZIQDSLRZUSP'
   },
   {
     domain: 'defi.stellar',
