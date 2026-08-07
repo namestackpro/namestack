@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Two separate jobs, running in PARALLEL by default (no "needs:" linking
+  # them). If the SDK is broken, you still find out about the web app's
+  # status independently, rather than one failure hiding the other.
+  sdk:
+    name: Typecheck SDK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          # cache-dependency-path tells the cache action WHERE the lockfile
+          # is, since this is a monorepo, not a plain single-package repo.
+          # Without this, caching can silently fail to find the right file.
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      # Monorepo installs happen ONCE at the root — pnpm workspaces resolve
+      # every package's dependencies together, unlike running "npm install"
+      # separately inside each folder.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck SDK
+        run: pnpm --filter @namestack/sdk typecheck
+
+  web:
+    name: Build web app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web app
+        # env: injects environment variables into just this step. These
+        # come from GitHub's encrypted Secrets (Settings -> Secrets and
+        # variables -> Actions), NOT hardcoded here. ${{ secrets.NAME }}
+        # is how you reference a secret in the expression syntax.
+        env:
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          NEXT_PUBLIC_SOROBAN_RPC_URL: ${{ secrets.NEXT_PUBLIC_SOROBAN_RPC_URL }}
+          NEXT_PUBLIC_NETWORK_PASSPHRASE: ${{ secrets.NEXT_PUBLIC_NETWORK_PASSPHRASE }}
+          NEXT_PUBLIC_ESCROW_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_ESCROW_CONTRACT_ID }}
+          NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID }}
+        run: pnpm --filter namestack build
