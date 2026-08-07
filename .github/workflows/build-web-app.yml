@@ -4,30 +4,46 @@ on:
   push:
     branches:
       - '**'
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
-    environment: CI # lets us use vars set in the "CI" environment of this repo on GitHub
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
+      # Installs from the REPO ROOT, not apps/web. This is what lets pnpm's
+      # workspace linking correctly wire @namestack/sdk into apps/web's
+      # node_modules in the first place.
       - name: Install dependencies
-        working-directory: apps/web
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Set environment variables
-        run: echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.CLERK_PUBLISHABLE_KEY }}" >> "$GITHUB_ENV"
+      # Explicitly builds the SDK before anything else touches it. This is
+      # the step that was entirely missing before.
+      - name: Build SDK
+        run: pnpm --filter @namestack/sdk build
 
       - name: Build with opennextjs-cloudflare
         working-directory: apps/web
+        env:
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          NEXT_PUBLIC_SOROBAN_RPC_URL: ${{ secrets.NEXT_PUBLIC_SOROBAN_RPC_URL }}
+          NEXT_PUBLIC_NETWORK_PASSPHRASE: ${{ secrets.NEXT_PUBLIC_NETWORK_PASSPHRASE }}
+          NEXT_PUBLIC_ESCROW_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_ESCROW_CONTRACT_ID }}
+          NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID }}
         run: pnpm opennextjs-cloudflare build
