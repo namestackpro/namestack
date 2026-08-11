@@ -1,5 +1,206 @@
 'use client'
 
+import React, { useMemo, useState } from 'react'
+import { sampleListings } from '@/lib/sample-listings'
+import { Button } from '@/components/ui/button'
+
+type Escrow = {
+  id: string
+  domain: string
+  amount: number
+  buyer: string
+  seller: string
+  status:
+    | 'Funded'
+    | 'Released'
+    | 'Refunded'
+    | 'Disputed'
+    | 'Awaiting buyer'
+    | 'Awaiting seller'
+  createdAt: string
+}
+
+const mockEscrows: Escrow[] = [
+  {
+    id: 'esc-101',
+    domain: 'islandstay.cv',
+    amount: 850,
+    buyer: 'GBUYER1',
+    seller: 'GCVSELLER1',
+    status: 'Funded',
+    createdAt: '2026-08-02'
+  },
+  {
+    id: 'esc-104',
+    domain: 'fintech.cv',
+    amount: 2400,
+    buyer: 'GBUYER2',
+    seller: 'GCVFIN1',
+    status: 'Disputed',
+    createdAt: '2026-07-05'
+  },
+  {
+    id: 'esc-110',
+    domain: 'lume.com',
+    amount: 12500,
+    buyer: 'GBUYER3',
+    seller: 'GCOMSELLER1',
+    status: 'Released',
+    createdAt: '2026-06-20'
+  }
+]
+
+export default function EscrowCommandCenter() {
+  const [q, setQ] = useState('')
+  const [selected, setSelected] = useState<Escrow | null>(mockEscrows[0])
+
+  const filtered = useMemo(() => {
+    const v = q.toLowerCase().trim()
+    if (!v) return mockEscrows
+    return mockEscrows.filter(
+      (e) =>
+        e.id.toLowerCase().includes(v)
+        || e.domain.toLowerCase().includes(v)
+        || e.buyer.toLowerCase().includes(v)
+        || e.seller.toLowerCase().includes(v)
+    )
+  }, [q])
+
+  return (
+    <div className="p-6">
+      <header className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-semibold">Escrow Command Center</h1>
+          <p className="text-muted-foreground mt-1">
+            Track domain transfers, manage buyer and seller actions, and resolve
+            escrow milestones with transparent on-chain status.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button>Connect Wallet</Button>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <aside>
+          <div className="mb-4">
+            <label className="sr-only">Search escrows</label>
+            <input
+              placeholder="Enter escrow ID, domain, buyer, or seller..."
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              className="w-full rounded-md bg-transparent border px-3 py-2"
+            />
+          </div>
+
+          <div className="space-y-2">
+            {filtered.map((e) => (
+              <button
+                key={e.id}
+                onClick={() => setSelected(e)}
+                className={`w-full text-left p-3 rounded ${selected?.id === e.id ? 'bg-primary/20' : 'bg-white/3'}`}
+              >
+                <div className="flex justify-between">
+                  <div className="font-semibold">{e.id}</div>
+                  <div className="text-sm">{e.status}</div>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {e.domain} · {e.amount} USDC
+                </div>
+              </button>
+            ))}
+          </div>
+        </aside>
+
+        <main className="lg:col-span-2">
+          {!selected && (
+            <div className="text-muted-foreground">
+              No escrow selected. Search or pick one from the list.
+            </div>
+          )}
+          {selected && (
+            <div>
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold">{selected.id}</h2>
+                  <div className="text-sm text-muted-foreground">
+                    {selected.domain} · {selected.amount} USDC
+                  </div>
+                </div>
+                <div className="text-sm">
+                  <div>
+                    Status: <strong>{selected.status}</strong>
+                  </div>
+                  <div>Created: {selected.createdAt}</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="p-4 rounded bg-white/3">
+                  <div className="text-sm text-muted-foreground">Buyer</div>
+                  <div className="font-mono mt-1">{selected.buyer}</div>
+                </div>
+                <div className="p-4 rounded bg-white/3">
+                  <div className="text-sm text-muted-foreground">Seller</div>
+                  <div className="font-mono mt-1">{selected.seller}</div>
+                </div>
+                <div className="p-4 rounded bg-white/3">
+                  <div className="text-sm text-muted-foreground">Amount</div>
+                  <div className="font-semibold mt-1">
+                    {selected.amount} USDC
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <h3 className="font-semibold">Escrow lifecycle</h3>
+                <ol className="mt-2 text-sm text-muted-foreground list-decimal pl-5">
+                  <li>Escrow Created</li>
+                  <li
+                    className={
+                      selected.status === 'Funded' ?
+                        'text-foreground'
+                      : 'text-muted-foreground'
+                    }
+                  >
+                    Buyer Funded
+                  </li>
+                  <li>Seller Transfers Domain</li>
+                  <li>Buyer Confirms Receipt</li>
+                  <li>Funds Released</li>
+                </ol>
+              </div>
+
+              <div className="flex gap-2">
+                {selected.status === 'Funded' && (
+                  <>
+                    <Button>Confirm Domain Receipt</Button>
+                    <Button variant="destructive">Raise Dispute</Button>
+                  </>
+                )}
+                {selected.status === 'Disputed' && (
+                  <div className="p-3 rounded bg-amber-600/10">
+                    Escrow under review — no release action available.
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-6">
+                <h4 className="font-semibold">Activity</h4>
+                <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+                  <li>Escrow {selected.id} funded — 2026-08-02</li>
+                  <li>Buyer requested transfer confirmation — 2026-08-03</li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  )
+}
+;('use client')
+
 import { useState } from 'react'
 import {
   connect,

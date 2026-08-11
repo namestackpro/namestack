@@ -204,6 +204,19 @@
   animation: ns-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
 }
 
+@keyframes ns-spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: ns-spin-slow 14s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-rise,
   .animate-rise-delay-1,
