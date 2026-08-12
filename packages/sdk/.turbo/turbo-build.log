@@ -1,0 +1,5 @@
+
+
+> @namestack/sdk@0.1.0 build /workspaces/namestack/packages/sdk
+> tsc
+
