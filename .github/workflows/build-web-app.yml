@@ -45,3 +45,39 @@ jobs:
           NEXT_PUBLIC_ESCROW_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_ESCROW_CONTRACT_ID }}
           NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID }}
         run: pnpm opennextjs-cloudflare build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build SDK
+        run: pnpm --filter @namestack/sdk build
+
+      - name: Deploy to Cloudflare Workers
+        working-directory: apps/web
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          NEXT_PUBLIC_SOROBAN_RPC_URL: ${{ secrets.NEXT_PUBLIC_SOROBAN_RPC_URL }}
+          NEXT_PUBLIC_NETWORK_PASSPHRASE: ${{ secrets.NEXT_PUBLIC_NETWORK_PASSPHRASE }}
+          NEXT_PUBLIC_ESCROW_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_ESCROW_CONTRACT_ID }}
+          NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID: ${{ secrets.NEXT_PUBLIC_USDC_TOKEN_CONTRACT_ID }}
+        run: pnpm run deploy
