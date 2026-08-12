@@ -8,29 +8,28 @@ import {
   CardHeader,
   CardContent,
   CardTitle,
-  CardDescription,
-  CardFooter
+  CardDescription
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
 function DomainCard({ l }: { l: Listing }) {
   return (
-    <article className="bg-gradient-to-br from-transparent via-white/2 to-transparent rounded-xl border border-white/5 p-4 backdrop-blur-sm shadow-sm">
+    <article className="bg-gradient-to-br from-transparent via-white/2 to-transparent rounded-xl border border-white/5 p-4 backdrop-blur-sm shadow-sm transition hover:shadow-lg">
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="font-mono text-xl font-semibold tracking-tight">
             {l.domain}
           </div>
-          <div className="mt-1 flex gap-2 text-sm text-muted-foreground">
-            <span className="px-2 py-1 rounded-full bg-white/3 text-xs">
+          <div className="mt-1 flex flex-wrap gap-2 text-sm text-muted-foreground">
+            <span className="rounded-full bg-white/5 px-2 py-1 text-xs">
               {l.tld}
             </span>
-            <span className="px-2 py-1 rounded-full bg-white/3 text-xs">
+            <span className="rounded-full bg-white/5 px-2 py-1 text-xs">
               {l.category}
             </span>
             {l.country && (
-              <span className="px-2 py-1 rounded-full bg-white/3 text-xs">
+              <span className="rounded-full bg-white/5 px-2 py-1 text-xs">
                 {l.country}
               </span>
             )}
@@ -43,33 +42,33 @@ function DomainCard({ l }: { l: Listing }) {
           </div>
         </div>
       </div>
-      <p className="mt-3 text-sm text-muted-foreground h-12 overflow-hidden">
+      <p className="mt-3 text-sm leading-6 text-muted-foreground h-14 overflow-hidden">
         {l.aiInsight}
       </p>
-      <div className="mt-4 flex items-center justify-between">
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="px-2 py-1 rounded-full bg-emerald-600/20 text-emerald-200">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+          <span className="rounded-full bg-emerald-600/20 px-2 py-1 text-emerald-200">
             Score {l.qualityScore}
           </span>
           {l.sellerVerified && (
-            <span className="px-2 py-1 rounded-full bg-cyan-600/20 text-cyan-200">
+            <span className="rounded-full bg-cyan-600/20 px-2 py-1 text-cyan-200">
               Verified
             </span>
           )}
           {l.escrowAvailable && (
-            <span className="px-2 py-1 rounded-full bg-violet-600/20 text-violet-200">
+            <span className="rounded-full bg-violet-600/20 px-2 py-1 text-violet-200">
               Escrow-ready
             </span>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Link
             href={`/marketplace/${encodeURIComponent(l.id)}`}
-            className="text-sm px-3 py-1 rounded-md bg-white/5"
+            className="rounded-md bg-white/5 px-3 py-1 text-sm transition hover:bg-white/10"
           >
-            View
+            View details
           </Link>
-          <button className="text-sm px-3 py-1 rounded-md bg-primary/80">
+          <button className="rounded-md bg-primary/90 px-3 py-1 text-sm text-white transition hover:bg-primary">
             Start escrow
           </button>
         </div>
@@ -119,7 +118,7 @@ export default function MarketplacePage() {
             securely through Stellar-powered escrow.
           </p>
         </div>
-        <div className="flex items-center gap-3 justify-start md:justify-center">
+        <div className="flex flex-wrap items-center gap-3 justify-start md:justify-center">
           <Button variant="outline">Connect Wallet</Button>
           <Link href="/marketplace/world-search">
             <Button variant="secondary">Explore by region</Button>
@@ -128,7 +127,7 @@ export default function MarketplacePage() {
             <Button>Manage escrows</Button>
           </Link>
         </div>
-        <div className="flex gap-3 justify-end text-sm text-muted-foreground">
+        <div className="flex flex-wrap gap-3 justify-end text-sm text-muted-foreground">
           <div className="text-center">
             2,480
             <br />
@@ -155,7 +154,7 @@ export default function MarketplacePage() {
       <section className="mb-6">
         <div className="max-w-4xl">
           <label className="sr-only">Search domains</label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <Input
               aria-label="Search domains"
               placeholder="Search domains, keywords, TLDs, categories, sellers..."
@@ -168,12 +167,12 @@ export default function MarketplacePage() {
               </Button>
             )}
           </div>
-          <div className="mt-3 flex gap-2 flex-wrap">
+          <div className="mt-3 flex flex-wrap gap-2">
             {quickChips.map((c) => (
               <button
                 key={c}
                 onClick={() => setQ(c)}
-                className="px-3 py-1 rounded-full bg-white/3 text-sm"
+                className="rounded-full bg-white/5 px-3 py-1 text-sm transition hover:bg-white/10"
               >
                 {c}
               </button>
@@ -182,13 +181,13 @@ export default function MarketplacePage() {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <aside className="md:col-span-1">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <aside>
           <Card>
             <CardHeader>
               <CardTitle>Filters</CardTitle>
               <CardDescription>
-                Refine by TLD, region, price, category, and status.
+                Refine by TLD, region, and status.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -210,7 +209,7 @@ export default function MarketplacePage() {
                     <button
                       key={t}
                       onClick={() => setTldFilter(tldFilter === t ? null : t)}
-                      className={`px-2 py-1 rounded text-sm ${tldFilter === t ? 'bg-primary text-white' : 'bg-white/3'}`}
+                      className={`rounded-full px-2 py-1 text-sm transition ${tldFilter === t ? 'bg-primary text-white' : 'bg-white/5'}`}
                     >
                       {t}
                     </button>
@@ -226,14 +225,15 @@ export default function MarketplacePage() {
                     'Latin America',
                     'Europe',
                     'Africa',
-                    'Asia-Pacific'
+                    'Asia-Pacific',
+                    'Middle East'
                   ].map((r) => (
                     <button
                       key={r}
                       onClick={() =>
                         setRegionFilter(regionFilter === r ? null : r)
                       }
-                      className={`px-2 py-1 rounded text-sm ${regionFilter === r ? 'bg-primary text-white' : 'bg-white/3'}`}
+                      className={`rounded-full px-2 py-1 text-sm transition ${regionFilter === r ? 'bg-primary text-white' : 'bg-white/5'}`}
                     >
                       {r}
                     </button>
@@ -256,113 +256,30 @@ export default function MarketplacePage() {
           </Card>
         </aside>
 
-        <main className="md:col-span-3">
-          <div className="mb-4 flex items-center justify-between">
+        <main>
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-sm text-muted-foreground">
               {filtered.length} results
             </div>
-            <div className="flex items-center gap-2">
-              <select className="rounded-md bg-transparent border px-2 py-1 text-sm">
+            <div>
+              <select className="rounded-md border bg-background px-3 py-2 text-sm">
                 <option>Recommended</option>
                 <option>Price low to high</option>
                 <option>Price high to low</option>
+                <option>Newest</option>
               </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.length === 0 && (
-              <div className="col-span-full text-center text-muted-foreground">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.length === 0 ?
+              <div className="col-span-full rounded-xl border border-dashed border-white/10 bg-white/5 p-8 text-center text-sm text-muted-foreground">
                 No matching domains found. Try removing filters or searching
                 another keyword.
               </div>
-            )}
-            {filtered.map((l) => (
-              <DomainCard key={l.id} l={l} />
-            ))}
+            : filtered.map((l) => <DomainCard key={l.id} l={l} />)}
           </div>
         </main>
-      </div>
-    </div>
-  )
-}
-;('use client')
-
-import Link from 'next/link'
-import { connect } from '@namestack/sdk'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { sampleListings } from '@/lib/sample-listings'
-
-export default function MarketplacePage() {
-  const handleConnectWallet = async () => {
-    try {
-      const address = await connect()
-      console.log('Connected wallet:', address)
-    } catch (error) {
-      console.error('Failed to connect wallet:', error)
-    }
-  }
-
-  return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Marketplace</h1>
-            <p className="text-muted-foreground mt-1">
-              Discover and purchase premium domain names
-            </p>
-          </div>
-          <Button onClick={handleConnectWallet} size="lg">
-            Connect Wallet
-          </Button>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {sampleListings.map((listing) => (
-            <Card
-              key={listing.domain}
-              className="hover:shadow-md transition-shadow"
-            >
-              <CardHeader>
-                <CardTitle className="text-xl font-mono">
-                  {listing.domain}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Price</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {listing.price} USDC
-                    </p>
-                  </div>
-                </div>
-                <div className="pt-2 border-t">
-                  <p className="text-sm text-muted-foreground">Seller</p>
-                  <p className="text-sm font-mono text-foreground truncate max-w-[200px]">
-                    {listing.seller}
-                  </p>
-                </div>
-                <Link
-                  href={`/marketplace/${listing.domain}`}
-                  className="mt-auto"
-                >
-                  <Button className="w-full" variant="default">
-                    View Details
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {sampleListings.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No listings available</p>
-          </div>
-        )}
       </div>
     </div>
   )
