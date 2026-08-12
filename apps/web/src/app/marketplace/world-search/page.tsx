@@ -77,7 +77,7 @@ export default function WorldSearchPage() {
                     stroke="#ffffff10"
                   />
                   {/* Simple markers from regionMap */}
-                  {regionMap.map((r, i) => {
+                  {regionMap.map((r) => {
                     const x = 100 + (r.coordinates?.lng || 0) / 2
                     const y = 100 - (r.coordinates?.lat || 0) / 4
                     return (
